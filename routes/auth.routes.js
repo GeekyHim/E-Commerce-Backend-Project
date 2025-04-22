@@ -7,7 +7,7 @@ const authMW = require("../middlewares/auth.mw")
 // takes an app object , app obj created thru express has the ultimate control 
 module.exports = (app) =>{
     app.post("/ecomm/api/v1/auth/signup", [authMW.verifySignUpBody], authController.signup) // post call -> handover to right controller
-
+                                        // middleware is always in form of an array
     // route for sign in post call
-    app.post("/ecomm/api/v1/auth/signin", authController.signin)
+    app.post("/ecomm/api/v1/auth/signin", [authMW.verifySignInBody] ,authController.signin)
 }
