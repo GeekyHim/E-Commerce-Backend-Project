@@ -63,7 +63,9 @@ require("./routes/auth.routes")(app)
 // calling routes and passing app object 
   // anonymous func? passed app as arg
 
-
+// stiching catrgories wala apis 
+require("./routes/category.routes")(app)
+// stitch kar ke app pass kar di 
 
 // start server
 // port number is customizable so hard-code nhi karege
