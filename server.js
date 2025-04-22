@@ -70,7 +70,3 @@ require("./routes/auth.routes")(app)
 app.listen(server_config.PORT, ()=>{
     console.log("Server Started at PORT :", server_config.PORT)
 })
-
-
-
-

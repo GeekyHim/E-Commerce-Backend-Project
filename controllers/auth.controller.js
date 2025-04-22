@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs')
 const user_model = require("../models/user.model")
+const jwt = require("jsonwebtoken")
+const secret = require("../configs/auth.config")
 
 // need to write the controller / logic to register a user
 
@@ -46,3 +48,43 @@ exports.signup = async (req,res) => {
     
 }
 //contoller ke pass both req and res ka control hona chahiye 
+
+
+// FOR LOGIN 
+
+exports.signin = async (req,res) => {
+
+    // check if the user id is present in the db 
+    const user = await user_model.findOne({userId : req.body.userId})
+    if(user == null){
+        return res.status(400).send({
+            message : "ERROR - User Id provided is Invalid or Doesn't Exist"
+        })
+    }
+   
+    // if password is correct or not
+    const isPasswordValid = bcrypt.compareSync(req.body.password, user.password)   
+    // since same instance of bcrypt is using to call this method hence it alrdy knows
+    // salt etc so ye khud hash kar compare karke bta dega 
+    // true if match else false
+    if(!isPasswordValid){
+        return res.status(401).send({
+            message : "ERROR : Password Invalid" // Galat hai, Sahi daalo :P
+        })
+    }
+
+    // using jwt generate/create an access token with a given TTL (time to live) and return it 
+    const token = jwt.sign({id : user.userId}, secret.secretKey ,{ expiresIn : 120 })
+    // sign ek method hai jo mujhe token dega
+    // kis data pe token bnega, here userId
+    // 2nd is secret word -> dont hard code, keeps on changing --> config files me bna diya
+    // TTL in seconds, here 2 mins ie 120 sec
+
+    res.status(200).send({
+        name : user.name,
+        userId : user.userId,
+        email : user.email,
+        userType : user.userType,
+        accessToken : token
+    })
+}
