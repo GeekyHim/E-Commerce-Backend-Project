@@ -2,8 +2,9 @@
 // and then intercept it 
 
 const authController = require("../controllers/auth.controller")
+const authMW = require("../middlewares/auth.mw")
 
 // takes an app object , app obj created thru express has the ultimate control 
 module.exports = (app) =>{
-    app.post("/ecomm/api/v1/auth/signup", authController.signup) // post call -> handover to right controller
+    app.post("/ecomm/api/v1/auth/signup", [authMW.verifySignUpBody], authController.signup) // post call -> handover to right controller
 }
