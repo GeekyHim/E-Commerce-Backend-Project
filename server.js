@@ -9,6 +9,9 @@ const db_config = require('./configs/db.config')
 const user_model = require('./models/user.model')
 const bcrypt = require('bcryptjs')
 
+app.use(express.json()) // middleware
+//whenever you get json read it as a js object
+
 
 // create an admin user at start of the application, if not alrdy present
 // phele connection with db to check and then create if not present

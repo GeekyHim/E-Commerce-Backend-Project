@@ -25,8 +25,18 @@ exports.signup = async (req,res) => {
 
     try{
         const user_created = await user_model.create(userObj)
+        
         // return now
-        res.status(201).send(user_created) // 201 means successfully created
+        const res_obj = {
+            name : user_created.name,
+            userId : user_created.userId,
+            email : user_created.email,
+            userType : user_created.userType,
+            createdAt : user_created.createdAt,
+            updatedAt : user_created.updatedAt
+        } // this doesnt have password for security purposes
+
+        res.status(201).send(res_obj) // 201 means successfully created
     }catch(err){
         consolele.log("Error while registering the user...",err)
         res.status(500).send({
